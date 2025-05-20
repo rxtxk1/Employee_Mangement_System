@@ -15,9 +15,19 @@ const DepartmentList = () => {
   // }  
 
   const onDepartmentDelete = async (id) => {
+    //console.log(id);
+    
+    // setDepartments((prevDepartments) => {
+    //   return prevDepartments.filter(dep => dep._id !== id);
+    // });
+    //console.log(id);
     setDepartments((prevDepartments) => {
-      return prevDepartments.filter(dep => dep._id !== id);
-    });
+  const updated = prevDepartments.filter(dep => dep._id !== id);
+  setFilteredDepartments(updated);
+  return updated;
+});
+
+    
   };
 
   useEffect(() => {

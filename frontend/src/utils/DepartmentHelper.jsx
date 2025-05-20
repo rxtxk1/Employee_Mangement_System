@@ -15,10 +15,12 @@ export const columns = [
     {
        name: "Action",
        selector: (row) => row.action
-    }
-]
+    },
+];
 
 export const DepartmentButtons = ({Id, onDepartmentDelete }) => {
+  //console.log(Id);
+  
    const navigate = useNavigate();
 
    const handleDelete = async (id) => {
