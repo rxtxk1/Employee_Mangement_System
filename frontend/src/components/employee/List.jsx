@@ -56,7 +56,7 @@ const List = () => {
       emp.name.toLowerCase().includes(e.target.value.toLowerCase())
     );
     setFilteredEmployees(records);
-  };
+  }; 
 
   return (
     <div className="p-6">
