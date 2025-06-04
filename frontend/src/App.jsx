@@ -80,6 +80,13 @@ function App() {
             path="/admin-dashboard/leaves/:id"
             element={<Detail />}
           ></Route>
+          <Route
+            path="/admin-dashboard/employees/leaves/:id"
+            element={<LeaveList />}
+          ></Route>
+
+          <Route
+            path="/admin-dashboard/setting" element={<Setting/>}></Route>
 
         </Route>
         <Route
@@ -98,7 +105,7 @@ function App() {
             path="/employee-dashboard/profile/:id"
             element={<View />}></Route>
           <Route
-            path="/employee-dashboard/leaves"
+            path="/employee-dashboard/leaves/:id"
             element={<LeaveList />}></Route>
           <Route
             path="/employee-dashboard/add-leave"

@@ -43,7 +43,7 @@ const Sidebar = () => {
           <span>My Profile</span>
         </NavLink>
         <NavLink
-          to="/employee-dashboard/leaves"
+          to={`/employee-dashboard/leaves/${user._id}`}
           className={({ isActive }) =>
             `${
               isActive ? "bg-teal-500 " : ""
