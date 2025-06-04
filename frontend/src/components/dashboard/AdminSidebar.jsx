@@ -53,8 +53,12 @@ const AdminSidebar = () => {
           <span>Department</span>
         </NavLink>
         <NavLink
-          to="/admin-dashboard"
-          className="flex items-center space-x-4 block py-2.5 px-4 rounded"
+          to="/admin-dashboard/leaves"
+          className={({ isActive }) =>
+            `${
+              isActive ? "bg-teal-500 " : ""
+            }flex items-center space-x-4 block py-2.5 px-4 rounded`
+          }
         >
           <FaCalendarAlt />
           <span>Leave</span>
