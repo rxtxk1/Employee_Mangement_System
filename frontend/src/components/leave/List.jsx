@@ -31,7 +31,7 @@ const List = () => {
 
   useEffect(() => {
     fetchLeaves();
-  }, []);
+  }, [id]);
 
   if(!leaves) {
     return <div> Loading </div>
