@@ -28,11 +28,12 @@ await newSalary.save();
 
 const getSalary = async (req, res) => {
   try {
-       const {id} = req.params;
-      //  console.log(id);                              
+       const {id, role} = req.params;
+
        let salary
-       salary = await Salary.find({employeeId: id}).populate('employeeId', 'employeeId')
-       if (!salary || salary.length < 1) {
+       if (role === 'admin') {
+         salary = await Salary.find({employeeId: id}).populate('employeeId', 'employeeId')
+       } else {
         const employee = await Employee.findOne({userId: id})
         salary = await Salary.find({employeeId: employee._id}).populate('employeeId', 'employeeId');
        }
