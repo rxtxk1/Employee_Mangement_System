@@ -20,6 +20,8 @@ import AddLeave from "./components/leave/Add";
 import Setting from "./components/EmployeeDashboard/Setting";
 import Table from "./components/leave/Table";
 import Detail from "./components/leave/Detail";
+import Attendance from "./components/attendance/Attendance";
+import AttendanceReport from "./components/attendance/AttendanceReport";
 
 function App() {
   return (
@@ -87,6 +89,10 @@ function App() {
 
           <Route
             path="/admin-dashboard/setting" element={<Setting/>}></Route>
+          <Route
+            path="/admin-dashboard/attendance" element={<Attendance/>}></Route>
+          <Route
+            path="/admin-dashboard/attendance-report" element={<AttendanceReport/>}></Route>
 
         </Route>
         <Route
