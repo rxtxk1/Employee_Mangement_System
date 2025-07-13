@@ -7,10 +7,10 @@ const View = () => {
   const [salaries, setSalaries] = useState(null);
   const [filteredSalaries, setFilteredSalaries] = useState(null);
   const { id } = useParams();
+  const { user } = useAuth();
   let sno = 1;
-  const {user} = useAuth()
 
-  const fetchSalareis = async () => {
+  const fetchSalaries = async () => {
     try {
       const response = await axios.get(
         `http://localhost:5000/api/salary/${id}/${user.role}`,
@@ -18,8 +18,8 @@ const View = () => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-        });
-      //console.log(response.data);
+        }
+      );
       if (response.data.success) {
         setSalaries(response.data.salary);
         setFilteredSalaries(response.data.salary);
@@ -32,71 +32,78 @@ const View = () => {
   };
 
   useEffect(() => {
-    fetchSalareis();
+    fetchSalaries();
   }, []);
 
-  const filterSalaries = (q) => {
-    const filteredRecords = salaries.filter((leave) =>
-      leave.employeeId.toLocaleLowerCase().includes(q.toLocaleLowerCase())
+  const filterSalaries = (e) => {
+    const query = e.target.value;
+    const filtered = salaries.filter((item) =>
+      item.employeeId.employeeId
+        .toLowerCase()
+        .includes(query.toLowerCase())
     );
-    setFilteredSalaries(filteredRecords);
+    setFilteredSalaries(filtered);
   };
 
   return (
-    <>
-      {filteredSalaries === null ? (
-        <div>Loading ...</div>
-      ) : (
-        <div className="overflow-x-auto p-5">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold">Salary History</h2>
-          </div>
+    <div className="p-6 min-h-screen bg-gray-100">
+      <div className="max-w-6xl mx-auto bg-white shadow-md rounded-lg p-6">
+        <h2 className="text-2xl font-bold text-center text-green-700 mb-4">
+          Salary History
+        </h2>
 
-          <div className="flex justify-end my-3">
-            <input
-              type="text"
-              placeholder="Search by Emp ID"
-              className="border px-2 rounded-md py-0.5 border-gray-300"
-              onChange={filterSalaries}
-            />
-          </div>
+        <div className="flex justify-end mb-4">
+          <input
+            type="text"
+            placeholder="Search by Emp ID"
+            onChange={filterSalaries}
+            className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
+        </div>
 
-          {filteredSalaries.length > 0 ? (
-            <table className="w-full text-sm text-left text-gray-500">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 border border-gray-200">
+        {filteredSalaries === null ? (
+          <div className="text-center text-gray-600">Loading...</div>
+        ) : filteredSalaries.length === 0 ? (
+          <div className="text-center text-gray-600">No Records Found</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white border border-gray-200 rounded">
+              <thead className="bg-green-100 text-gray-700 text-sm uppercase">
                 <tr>
-                  <th className="px-6 py-3">SNO</th>
-                  <th className="px-6 py-3">Emp ID</th>
-                  <th className="px-6 py-3">Salary</th>
-                  <th className="px-6 py-3">Allowance</th>
-                  <th className="px-6 py-3">Deduction</th>
-                  <th className="px-6 py-3">Total</th>
-                  <th className="px-6 py-3">Pay Date</th>
+                  <th className="py-2 px-4 border">S.No</th>
+                  <th className="py-2 px-4 border">Emp ID</th>
+                  <th className="py-2 px-4 border">Salary</th>
+                  <th className="py-2 px-4 border">Allowance</th>
+                  <th className="py-2 px-4 border">Deduction</th>
+                  <th className="py-2 px-4 border">Total</th>
+                  <th className="py-2 px-4 border">Pay Date</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredSalaries.map((salary) => (
                   <tr
                     key={salary._id}
-                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                    className="text-sm text-gray-700 hover:bg-gray-50 transition"
                   >
-                    <td className="px-6 py-3">{sno++}</td>
-                    <td className="px-6 py-3">{salary.employeeId.employeeId}</td>
-                    <td className="px-6 py-3">{salary.basicSalary}</td>
-                    <td className="px-6 py-3">{salary.allowances}</td>
-                    <td className="px-6 py-3">{salary.deductions}</td>
-                    <td className="px-6 py-3">{salary.netSalary}</td>
-                    <td className="px-6 py-3">
+                    <td className="py-2 px-4 border text-center">{sno++}</td>
+                    <td className="py-2 px-4 border">
+                      {salary.employeeId.employeeId}
+                    </td>
+                    <td className="py-2 px-4 border">{salary.basicSalary}</td>
+                    <td className="py-2 px-4 border">{salary.allowances}</td>
+                    <td className="py-2 px-4 border">{salary.deductions}</td>
+                    <td className="py-2 px-4 border">{salary.netSalary}</td>
+                    <td className="py-2 px-4 border">
                       {new Date(salary.payDate).toLocaleDateString()}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          ): <div> No Records </div>}
-        </div>
-      )}
-    </>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

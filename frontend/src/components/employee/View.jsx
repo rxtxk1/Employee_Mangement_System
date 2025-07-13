@@ -1,12 +1,12 @@
-import React, { useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const View = () => {
-    const {id} = useParams();
-    const [employee, setEmployee] = useState(null);
+  const { id } = useParams();
+  const [employee, setEmployee] = useState(null);
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchEmployee = async () => {
       try {
         const response = await axios.get(
@@ -18,8 +18,6 @@ const View = () => {
           }
         );
         if (response.data.success) {
-          //console.log(response.data.employee);
-          
           setEmployee(response.data.employee);
         }
       } catch (error) {
@@ -30,55 +28,61 @@ const View = () => {
     };
 
     fetchEmployee();
-  }, []);
+  }, [id]);
 
   return (
-    <>{employee ? (
-    <div className="max-w-3xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-8 text-center">
-        Employee Details
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <img 
-            src={`http://localhost:5000/${employee.userId.profileImage}`} 
-            className="rounded-full border w-72"
-          />
-      </div>
-      <div>
-          <div className="flex space-x-3 mb-5">
-            <p className="text-lg font-bold">Name:</p>
-            <p className="font-medium">{employee.userId.name}</p>
-          </div>
-          <div className="flex space-x-3 mb-5">
-            <p className="text-lg font-bold">Employee ID:</p>
-            <p className="font-medium">{employee.employeeId}</p>
-      </div>
+    <>
+      {employee ? (
+        <div className="max-w-5xl mx-auto mt-10 p-6 bg-white shadow-2xl rounded-xl">
+          <h2 className="text-3xl font-extrabold text-green-700 text-center mb-10">
+            Employee Profile
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+            {/* Profile Image */}
+            <div className="flex justify-center">
+              <img
+                src={`http://localhost:5000/${employee.userId.profileImage}`}
+                alt="Profile"
+                className="w-64 h-64 rounded-full border-4 border-green-600 shadow-lg object-cover"
+              />
+            </div>
 
-          <div className="flex space-x-3 mb-5">
-            <p className="text-lg font-bold">Date of Birth:</p>
-            <p className="font-medium">
-              {new Date(employee.dob).toLocaleDateString()}
-            </p>
-          </div>
-          <div className="flex space-x-3 mb-5">
-            <p className="text-lg font-bold">Gender:</p>
-            <p className="font-medium">{employee.gender}</p>
-          </div>
-
-          <div className="flex space-x-3 mb-5">
-            <p className="text-lg font-bold">Department:</p>
-            <p className="font-medium">{employee.department.dep_name}</p>
-          </div>
-          <div className="flex space-x-3 mb-5">
-            <p className="text-lg font-bold">Marital Status:</p>
-            <p className="font-medium">{employee.maritalStatus}</p>
+            {/* Info Section */}
+            <div className="space-y-4">
+              <div className="flex gap-2">
+                <p className="font-semibold text-gray-700 w-40">Name:</p>
+                <p className="text-gray-900">{employee.userId.name}</p>
+              </div>
+              <div className="flex gap-2">
+                <p className="font-semibold text-gray-700 w-40">Employee ID:</p>
+                <p className="text-gray-900">{employee.employeeId}</p>
+              </div>
+              <div className="flex gap-2">
+                <p className="font-semibold text-gray-700 w-40">Date of Birth:</p>
+                <p className="text-gray-900">
+                  {new Date(employee.dob).toLocaleDateString()}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <p className="font-semibold text-gray-700 w-40">Gender:</p>
+                <p className="text-gray-900">{employee.gender}</p>
+              </div>
+              <div className="flex gap-2">
+                <p className="font-semibold text-gray-700 w-40">Department:</p>
+                <p className="text-gray-900">{employee.department.dep_name}</p>
+              </div>
+              <div className="flex gap-2">
+                <p className="font-semibold text-gray-700 w-40">Marital Status:</p>
+                <p className="text-gray-900">{employee.maritalStatus}</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    ): <div> Loading ....</div>} </>
-  )
-}
+      ) : (
+        <div className="p-6 text-center text-gray-600">Loading...</div>
+      )}
+    </>
+  );
+};
 
-export default View
+export default View;

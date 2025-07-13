@@ -7,107 +7,50 @@ import {
   FaMoneyBillWave,
   FaTachometerAlt,
   FaUsers,
-  FaBars,
   FaRegCalendarAlt,
 } from "react-icons/fa";
 import { AiOutlineFileText } from "react-icons/ai";
 
 const AdminSidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
+
   return (
-    <div className="bg-gray-800 text-white h-screen fixed left-0 top-0 bottom-0 space-y-2 w-64">
-      <div className="bg-teal-600 h-12 flex items-center justify-center">
-        <h3 className="font-bold">Employee Management System</h3>
+    <div className="bg-gray-900 text-white h-screen fixed left-0 top-0 w-64 shadow-xl z-40">
+      {/* Logo */}
+      <div className="bg-gray-100 h-16 flex items-center justify-center px-4 shadow-md">
+        <img
+          src="/new_logo.jpg"
+          alt="Company Logo"
+          className="h-14 w-full"
+        />
       </div>
-      <div className="px-4">
-        <NavLink
-          to="/admin-dashboard"
-          className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : ""
-            }flex items-center space-x-4 block py-2.5 px-4 rounded`
-          }
-          end
-        >
-          <FaTachometerAlt />
-          <span>Dashboard</span>
-        </NavLink>
-        <NavLink
-          to="/admin-dashboard/employees"
-          className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : ""
-            }flex items-center space-x-4 block py-2.5 px-4 rounded`
-          }
-        >
-          <FaUsers />
-          <span>Employee</span>
-        </NavLink>
-        <NavLink
-          to="/admin-dashboard/departments"
-          className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : ""
-            }flex items-center space-x-4 block py-2.5 px-4 rounded`
-          }
-        >
-          <FaBuilding />
-          <span>Department</span>
-        </NavLink>
-        <NavLink
-          to="/admin-dashboard/leaves"
-          className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : ""
-            }flex items-center space-x-4 block py-2.5 px-4 rounded`
-          }
-        >
-          <FaCalendarAlt />
-          <span>Leave</span>
-        </NavLink>
-        <NavLink
-          to="/admin-dashboard/salary/add"
-          className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : ""
-            }flex items-center space-x-4 block py-2.5 px-4 rounded`
-          }
-        >
-          <FaMoneyBillWave />
-          <span>Salary</span>
-        </NavLink>
-        <NavLink
-          to={`/admin-dashboard/attendance`}
-          className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : ""
-            }flex items-center space-x-4 block py-2.5 px-4 rounded`
-          }
-        >
-          <FaRegCalendarAlt />
-          <span>Attendance</span>
-        </NavLink>
-        <NavLink
-          to={`/admin-dashboard/attendance-report`}
-          className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 " : ""
-            }flex items-center space-x-4 block py-2.5 px-4 rounded`
-          }
-        >
-          <AiOutlineFileText />
-          <span>Attendance Report</span>
-        </NavLink>
-        <NavLink
-          to="/admin-dashboard/setting"
-          className="flex items-center space-x-4 block py-2.5 px-4 rounded"
-        >
-          <FaCogs />
-          <span>Setting</span>
-        </NavLink>
+
+      {/* Navigation Links */}
+      <div className="mt-4 space-y-1 px-4">
+        <NavItem to="/admin-dashboard" icon={<FaTachometerAlt />} label="Dashboard" />
+        <NavItem to="/admin-dashboard/employees" icon={<FaUsers />} label="Employee" />
+        <NavItem to="/admin-dashboard/departments" icon={<FaBuilding />} label="Department" />
+        <NavItem to="/admin-dashboard/leaves" icon={<FaCalendarAlt />} label="Leave" />
+        <NavItem to="/admin-dashboard/salary/add" icon={<FaMoneyBillWave />} label="Salary" />
+        <NavItem to="/admin-dashboard/attendance" icon={<FaRegCalendarAlt />} label="Attendance" />
+        <NavItem to="/admin-dashboard/attendance-report" icon={<AiOutlineFileText />} label="Attendance Report" />
+        <NavItem to="/admin-dashboard/setting" icon={<FaCogs />} label="Setting" />
       </div>
     </div>
   );
-}
+};
+
+const NavItem = ({ to, icon, label }) => (
+  <NavLink
+    to={to}
+    className={({ isActive }) =>
+      `${isActive ? "bg-green-600" : "hover:bg-gray-800"} flex items-center space-x-3 py-2.5 px-4 rounded-md transition duration-150`
+    }
+    end
+  >
+    {icon}
+    <span className="text-sm font-medium">{label}</span>
+  </NavLink>
+);
 
 export default AdminSidebar;

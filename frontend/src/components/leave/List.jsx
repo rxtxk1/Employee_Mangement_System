@@ -1,13 +1,13 @@
-import React, { useState, useEffect, use }  from 'react'
-import { Link, useParams } from 'react-router-dom'
-import axios from 'axios'
-import { useAuth } from '../../context/authContext'
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { useAuth } from '../../context/authContext';
 
 const List = () => {
   const [leaves, setLeaves] = useState(null);
+  const { id } = useParams();
+  const { user } = useAuth();
   let sno = 1;
-  const {id} = useParams();
-  const {user} = useAuth();
 
   const fetchLeaves = async () => {
     try {
@@ -17,8 +17,8 @@ const List = () => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-        });
-      //console.log(response.data);
+        }
+      );
       if (response.data.success) {
         setLeaves(response.data.leaves);
       }
@@ -33,33 +33,35 @@ const List = () => {
     fetchLeaves();
   }, [id]);
 
-  if(!leaves) {
-    return <div> Loading </div>
-  }
+  if (!leaves) return <div className="p-6 text-gray-600">Loading...</div>;
 
   return (
-    <div className="p-6">
-      <div className="text-center">
-        <h3 className="text-2xl font-bold">Manage Leaves</h3>
-      </div>
-      <div className="flex justify-between items-center">
-        <input
-          type="text"
-          placeholder="Search By Emp Name"
-          className="px-4 py-0.5 border"
-        />
-        {user.role === "employee" && 
-        <Link
-          to="/employee-dashboard/add-leave"
-          className="px-4 py-1 bg-teal-600 rounded text-white"
-        >
-          Add New Leave
-        </Link>
-      }
-      </div>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-6">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+          <h3 className="text-2xl font-bold text-green-700">Manage Leaves</h3>
 
-    <table className="w-full text-sm text-left text-gray-500 mt-6">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 border border-gray-200">
+          <div className="flex items-center gap-4 mt-4 md:mt-0">
+            <input
+              type="text"
+              placeholder="Search by Emp Name"
+              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            />
+            {user.role === 'employee' && (
+              <Link
+                to="/employee-dashboard/add-leave"
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md shadow transition"
+              >
+                Add New Leave
+              </Link>
+            )}
+          </div>
+        </div>
+
+        {leaves.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-sm text-left text-gray-600">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-100 border border-gray-200">
                 <tr>
                   <th className="px-6 py-3">SNO</th>
                   <th className="px-6 py-3">Leave Type</th>
@@ -71,24 +73,40 @@ const List = () => {
               </thead>
               <tbody>
                 {leaves.map((leave) => (
-                  <tr
-                    key={leave._id}
-                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                  >
+                  <tr key={leave._id} className="bg-white border-b">
                     <td className="px-6 py-3">{sno++}</td>
                     <td className="px-6 py-3">{leave.leaveType}</td>
-                    <td className="px-6 py-3">{new Date(leave.startDate).toLocaleDateString()}</td>
-                    
-                    <td className="px-6 py-3">{new Date(leave.endDate).toLocaleDateString()}</td>
+                    <td className="px-6 py-3">
+                      {new Date(leave.startDate).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-3">
+                      {new Date(leave.endDate).toLocaleDateString()}
+                    </td>
                     <td className="px-6 py-3">{leave.reason}</td>
-                    <td className="px-6 py-3">{leave.status}</td>
+                    <td className="px-6 py-3">
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm font-medium ${
+                          leave.status === 'Pending'
+                            ? 'bg-yellow-100 text-yellow-700'
+                            : leave.status === 'Approved'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-red-100 text-red-700'
+                        }`}
+                      >
+                        {leave.status}
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
-            </table>     
+            </table>
+          </div>
+        ) : (
+          <div className="text-center text-gray-600 mt-4">No leave records found.</div>
+        )}
+      </div>
+    </div>
+  );
+};
 
-  </div>
-  )
-}
-
-export default List
+export default List;
